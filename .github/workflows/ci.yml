@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Go ${{ matrix.go }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        go: ['1.26.x', 'stable']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go }}
+          check-latest: true
+      - run: go mod download
+      - run: go mod verify
+      - run: find colab cmd -name '*.go' -print0 | xargs -0 gofmt -d | tee /tmp/gofmt.diff && test ! -s /tmp/gofmt.diff
+      - run: go vet ./...
+      - run: go test ./... -race -count=1
+      - run: go build -o /tmp/colab ./cmd/colab

@@ -1,0 +1,39 @@
+# Build artifacts
+/bin/
+/dist/
+/coverage.out
+*.coverprofile
+*.test
+
+# Go workspace
+/go.work
+/go.work.sum
+
+# Editors and OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Local credentials and runtime state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.oauth-token.json
+sessions.json
+settings.json
+token.json
+history/
+
+# GoReleaser local output
+/dist/
+/coverage.txt
+
+# Go workspace build cache
+/bin/
+
+# Generated local test fixtures
+tmp/
+*.tmp
